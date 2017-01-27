@@ -3,6 +3,7 @@ package com.example.android.movieclub;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -52,6 +53,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setLogo(R.mipmap.ic_launcher);
+        actionBar.setDisplayUseLogoEnabled(true);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener()
@@ -152,7 +157,16 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
                     Log.d(TAG, movieData.getPoster());
 
-                    MoviesContract.MovieEntry.saveMovie(MainActivity.this, movieData);
+                    if(MoviesContract.MovieEntry.saveMovie(MainActivity.this, movieData))
+                    {
+                        Toast.makeText(MainActivity.this, getString(R.string.added_movie), Toast.LENGTH_SHORT).show();
+                    }
+
+                    else
+                    {
+                        Toast.makeText(MainActivity.this, getString(R.string.repeated_movie), Toast.LENGTH_SHORT).show();
+                    }
+
                     mProgressBar.setVisibility(View.INVISIBLE);
                 }
 

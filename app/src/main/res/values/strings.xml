@@ -23,4 +23,5 @@
     <!-- Info -->
     <string name="added_movie">Movie added to your list</string>
     <string name="removed_movie">Movie removed from your list</string>
+    <string name="repeated_movie">You already have this movie in your list</string>
 </resources>

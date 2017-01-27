@@ -64,22 +64,32 @@ public class MoviesContract
         }
 
         // Save movie in database
-        public static void saveMovie(Context context, MovieData movieData)
+        public static boolean saveMovie(Context context, MovieData movieData)
         {
-            ContentValues values = new ContentValues();
-            values.put(COLUMN_TITLE, movieData.getTitle());
-            values.put(COLUMN_ACTORS, movieData.getActors());
-            values.put(COLUMN_DIRECTOR, movieData.getDirector());
-            values.put(COLUMN_RUNTIME, movieData.getRuntime());
-            values.put(COLUMN_GENRE, movieData.getGenre());
-            values.put(COLUMN_POSTER, movieData.getPoster());
-            values.put(COLUMN_PLOT, movieData.getPlot());
-            values.put(COLUMN_RELEASED, movieData.getReleased());
-            values.put(COLUMN_METASCORE, movieData.getMetascore());
-            values.put(COLUMN_IMBD_RATING, movieData.getImdbRating());
+            if(exists(context, movieData))
+            {
+                return false;
+            }
 
-            ContentResolver contentResolver = context.getContentResolver();
-            contentResolver.bulkInsert(CONTENT_URI, new ContentValues[] {values});
+            else
+            {
+                ContentValues values = new ContentValues();
+                values.put(COLUMN_TITLE, movieData.getTitle());
+                values.put(COLUMN_ACTORS, movieData.getActors());
+                values.put(COLUMN_DIRECTOR, movieData.getDirector());
+                values.put(COLUMN_RUNTIME, movieData.getRuntime());
+                values.put(COLUMN_GENRE, movieData.getGenre());
+                values.put(COLUMN_POSTER, movieData.getPoster());
+                values.put(COLUMN_PLOT, movieData.getPlot());
+                values.put(COLUMN_RELEASED, movieData.getReleased());
+                values.put(COLUMN_METASCORE, movieData.getMetascore());
+                values.put(COLUMN_IMBD_RATING, movieData.getImdbRating());
+
+                ContentResolver contentResolver = context.getContentResolver();
+                contentResolver.bulkInsert(CONTENT_URI, new ContentValues[]{values});
+
+                return true;
+            }
         }
 
         // Delete specific movie from database
@@ -126,6 +136,23 @@ public class MoviesContract
             progressBar.setVisibility(View.INVISIBLE);
 
             return returnList;
+        }
+
+        public static boolean exists(Context context, MovieData movieData)
+        {
+            List<MovieData> returnList = new ArrayList<>();
+
+            String[] columns = { COLUMN_TITLE, COLUMN_RELEASED };
+
+            String selection = COLUMN_TITLE + " = ? AND " + COLUMN_RELEASED + " = ?";
+
+            String[] selectionArgs = {movieData.getTitle(), movieData.getReleased()};
+
+            ContentResolver contentResolver = context.getContentResolver();
+
+            Cursor cursor = contentResolver.query(CONTENT_URI, columns, selection, selectionArgs, null);
+
+            return cursor.moveToNext();
         }
     }
 }
