@@ -1,4 +1,4 @@
-package com.example.android.movieclub.Movie;
+package com.example.android.movieclub.movie;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -8,6 +8,7 @@ import android.os.Parcelable;
  */
 public class MovieData implements Parcelable
 {
+    public static final String EXTRA_MOVIE_DATA = "com.example.android.movieclub.movie.MovieData";;
     private String title;
     private String actors;
     private String director;

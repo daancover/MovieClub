@@ -19,4 +19,8 @@
     <!-- Text views -->
     <string name="movie_name_question">What is the name of the movie?</string>
     <string name="title_activity_details">DetailsActivity</string>
+
+    <!-- Info -->
+    <string name="added_movie">Movie added to your list</string>
+    <string name="removed_movie">Movie removed from your list</string>
 </resources>

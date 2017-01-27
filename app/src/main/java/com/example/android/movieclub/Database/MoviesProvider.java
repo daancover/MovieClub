@@ -1,4 +1,4 @@
-package com.example.android.movieclub.Database;
+package com.example.android.movieclub.database;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;

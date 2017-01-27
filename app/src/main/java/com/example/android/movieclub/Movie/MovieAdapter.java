@@ -1,4 +1,4 @@
-package com.example.android.movieclub.Movie;
+package com.example.android.movieclub.movie;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -29,7 +29,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         mOnClickListener = movieItemClickListener;
     }
 
-    MovieData getMovieData(int position)
+    public MovieData getMovieData(int position)
     {
         if(mMovieData != null && mMovieData.size() > position)
         {

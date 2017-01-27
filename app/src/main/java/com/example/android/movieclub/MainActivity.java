@@ -21,9 +21,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.android.movieclub.Database.MoviesContract;
-import com.example.android.movieclub.Movie.MovieAdapter;
-import com.example.android.movieclub.Movie.MovieData;
+import com.example.android.movieclub.database.MoviesContract;
+import com.example.android.movieclub.movie.MovieAdapter;
+import com.example.android.movieclub.movie.MovieData;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -207,6 +207,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     @Override
     public void onMovieItemClick(int itemIndex)
     {
-
+        Intent intent = new Intent(this, DetailsActivity.class);
+        intent.putExtra(MovieData.EXTRA_MOVIE_DATA, mAdapter.getMovieData(itemIndex));
+        startActivity(intent);
     }
 }

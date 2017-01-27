@@ -1,4 +1,4 @@
-package com.example.android.movieclub.Database;
+package com.example.android.movieclub.database;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -9,7 +9,7 @@ import android.provider.BaseColumns;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import com.example.android.movieclub.Movie.MovieData;
+import com.example.android.movieclub.movie.MovieData;
 
 import java.util.ArrayList;
 import java.util.List;

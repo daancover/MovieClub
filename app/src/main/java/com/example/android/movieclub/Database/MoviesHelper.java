@@ -1,4 +1,4 @@
-package com.example.android.movieclub.Database;
+package com.example.android.movieclub.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
