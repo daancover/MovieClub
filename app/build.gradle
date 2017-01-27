@@ -27,4 +27,13 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.1.0'
     compile 'com.android.support:design:25.1.0'
     testCompile 'junit:junit:4.12'
+
+    // Volley api
+    compile "com.mcxiaoke.volley:library:1.0.+"
+
+    // Picasso
+    compile 'com.squareup.picasso:picasso:2.5.2'
+
+    // Constraint Layout
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
 }

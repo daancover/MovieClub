@@ -1,4 +1,22 @@
 <resources>
-    <string name="app_name">MovieClub</string>
+    <!-- Activity names -->
+    <string name="app_name">Movie Club</string>
+    <string name="overlay_name">Movie Name</string>
+
+    <!-- Buttons -->
     <string name="action_settings">Settings</string>
+    <string name="action_search">Search</string>
+    <string name="action_cancel">Cancel</string>
+
+    <!-- Error messages -->
+    <string name="connection_error">Error trying to request data. Please make sure your device is connected to the internet</string>
+    <string name="json_exception">Unable to find movie</string>
+    <string name="movie_name_empty">Please insert desired movie title</string>
+
+    <!-- Content authority -->
+    <string name="content_authority">com.example.android.movieclub</string>
+
+    <!-- Text views -->
+    <string name="movie_name_question">What is the name of the movie?</string>
+    <string name="title_activity_details">DetailsActivity</string>
 </resources>

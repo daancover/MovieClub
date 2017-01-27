@@ -1,16 +1,49 @@
 package com.example.android.movieclub;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.android.movieclub.Database.MoviesContract;
+import com.example.android.movieclub.Movie.MovieAdapter;
+import com.example.android.movieclub.Movie.MovieData;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieItemClickListener
 {
+    // Request url parts
+    private static final String urlBegin = "http://www.omdbapi.com/?t=";
+    private static final String urlEnd = "&y=&plot=short&r=json";
+
+    // Tag for debugging purposes
+    private static final String TAG = MainActivity.class.getSimpleName();
+
+    // Constants to get results from OverlayActivity
+    private static final int REQUEST_CODE_OVERLAY_ACTIVITY = 1;
+    private static final String MOVIE_NAME_TAG = "movie_name";
+
+    private ProgressBar mProgressBar;
+    private RecyclerView mRecyclerView;
+    private MovieAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -26,33 +59,154 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                Intent intent = new Intent(MainActivity.this, OverlayActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_OVERLAY_ACTIVITY);
             }
         });
+
+        mProgressBar = (ProgressBar) findViewById(R.id.pb_progress_bar);
+        mRecyclerView = (RecyclerView) findViewById(R.id.rv_movies);
+
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3, LinearLayoutManager.VERTICAL, false);
+
+        mRecyclerView.setLayoutManager(gridLayoutManager);
+        mRecyclerView.setHasFixedSize(true);
+        mAdapter = new MovieAdapter(MainActivity.this, this);
+
+        mRecyclerView.setAdapter(mAdapter);
+        loadMovieData();
     }
 
     @Override
+    protected void onResume()
+    {
+        super.onResume();
+        mAdapter.setMovieData(null);
+        loadMovieData();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == REQUEST_CODE_OVERLAY_ACTIVITY)
+        {
+            if(resultCode == RESULT_OK)
+            {
+                String movieName = data.getStringExtra(MOVIE_NAME_TAG);
+                Log.e(TAG, movieName);
+
+                requestMovie(movieName);
+            }
+        }
+    }
+
+    // Add items to the action bar
+    @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
+    // Handle action bar item clicks
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if(id == R.id.action_settings)
+        return super.onOptionsItemSelected(item);
+    }
+
+    void loadMovieData()
+    {
+        mProgressBar.setVisibility(View.VISIBLE);
+        mRecyclerView.setVisibility(View.VISIBLE);
+        mAdapter.setMovieData(MoviesContract.MovieEntry.loadMovies(this, mProgressBar));
+    }
+
+    public MovieData requestMovie(final String movieName)
+    {
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+
+        final JsonObjectRequest jsonRequest =  new JsonObjectRequest(Request.Method.GET, buildUrl(movieName), new Response.Listener<JSONObject>()
         {
-            return true;
+            @Override
+            public void onResponse(JSONObject response)
+            {
+                try
+                {
+                    // Store all movie data
+                    final MovieData movieData = new MovieData(
+                            response.getString(MoviesContract.MovieEntry.COLUMN_TITLE),
+                            response.getString(MoviesContract.MovieEntry.COLUMN_ACTORS),
+                            response.getString(MoviesContract.MovieEntry.COLUMN_DIRECTOR),
+                            response.getString(MoviesContract.MovieEntry.COLUMN_RUNTIME),
+                            response.getString(MoviesContract.MovieEntry.COLUMN_GENRE),
+                            response.getString(MoviesContract.MovieEntry.COLUMN_POSTER),
+                            response.getString(MoviesContract.MovieEntry.COLUMN_PLOT),
+                            response.getString(MoviesContract.MovieEntry.COLUMN_RELEASED),
+                            response.getString(MoviesContract.MovieEntry.COLUMN_METASCORE),
+                            response.getString(MoviesContract.MovieEntry.COLUMN_IMBD_RATING));
+
+                    Log.d(TAG, movieData.getPoster());
+
+                    MoviesContract.MovieEntry.saveMovie(MainActivity.this, movieData);
+                    mProgressBar.setVisibility(View.INVISIBLE);
+                }
+
+                catch(JSONException e)
+                {
+                    mProgressBar.setVisibility(View.INVISIBLE);
+                    e.printStackTrace();
+                    Toast.makeText(MainActivity.this, getString(R.string.json_exception), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError error)
+            {
+                mProgressBar.setVisibility(View.INVISIBLE);
+                Toast.makeText(MainActivity.this, getString(R.string.connection_error), Toast.LENGTH_LONG).show();
+            }
+        });
+
+        requestQueue.add(jsonRequest);
+
+        return null;
+    }
+
+    public String buildUrl(String movieName)
+    {
+        String url = urlBegin;
+
+        if(movieName.contains(" "))
+        {
+            String[] movieNameParts = movieName.split(" ");
+
+            for(int i = 0; i < movieNameParts.length - 1; i++)
+            {
+                url += movieNameParts[i] + "+";
+            }
+
+            url += movieNameParts[movieNameParts.length - 1];
         }
 
-        return super.onOptionsItemSelected(item);
+        else
+        {
+            url += movieName;
+        }
+
+        url += urlEnd;
+
+        return url;
+    }
+
+    @Override
+    public void onMovieItemClick(int itemIndex)
+    {
+
     }
 }
