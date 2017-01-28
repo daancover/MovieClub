@@ -24,4 +24,25 @@
     <string name="added_movie">Movie added to your list</string>
     <string name="removed_movie">Movie removed from your list</string>
     <string name="repeated_movie">You already have this movie in your list</string>
+    
+    <!-- Preferences options -->
+        <!-- App Color -->
+            <!-- Labels -->
+            <string name="pref_app_color_label">Background Style</string>
+            <string name="pref_app_color_label_dark">Dark</string>
+            <string name="pref_app_color_label_light">Light</string>
+            <!-- Keys -->
+            <string name="pref_app_color_key" translatable="false">background</string>
+            <string name="pref_app_color_value_dark" translatable="false">dark</string>
+            <string name="pref_app_color_value_light" translatable="false">light</string>
+        <!-- Sort by -->
+            <!-- Labels -->
+            <string name="pref_sort_by_label">Sort Movies By</string>
+            <string name="pref_sort_by_label_alphabetic">A - Z</string>
+            <string name="pref_sort_by_label_release">Release Date</string>
+            <!-- Keys -->
+            <string name="pref_sort_by_key" translatable="false">sort</string>
+            <string name="pref_sort_by_value_alphabetic" translatable="false">alphabetic</string>
+            <string name="pref_sort_by_value_release" translatable="false">release</string>
+    
 </resources>

@@ -1,14 +1,15 @@
 package com.example.android.movieclub;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,7 +30,7 @@ import com.example.android.movieclub.movie.MovieData;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieItemClickListener
+public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieItemClickListener, SharedPreferences.OnSharedPreferenceChangeListener
 {
     // Request url parts
     private static final String urlBegin = "http://www.omdbapi.com/?t=";
@@ -49,15 +50,22 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        // Load saved Settings
+        setupSharedPreferences();
 
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_main);
+
+        /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);*/
+
+        // Show app logo in Action Bar
         ActionBar actionBar = getSupportActionBar();
         actionBar.setLogo(R.mipmap.ic_launcher);
         actionBar.setDisplayUseLogoEnabled(true);
 
+        // Button to add a new movie
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener()
         {
@@ -69,16 +77,16 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             }
         });
 
+        // Setup movie list and user feedback
         mProgressBar = (ProgressBar) findViewById(R.id.pb_progress_bar);
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_movies);
-
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3, LinearLayoutManager.VERTICAL, false);
-
         mRecyclerView.setLayoutManager(gridLayoutManager);
         mRecyclerView.setHasFixedSize(true);
         mAdapter = new MovieAdapter(MainActivity.this, this);
-
         mRecyclerView.setAdapter(mAdapter);
+
+        // Load saved movies form local db
         loadMovieData();
     }
 
@@ -86,6 +94,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     protected void onResume()
     {
         super.onResume();
+
+        // Reload movie list
         mAdapter.setMovieData(null);
         loadMovieData();
     }
@@ -120,6 +130,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     public boolean onOptionsItemSelected(MenuItem item)
     {
         int id = item.getItemId();
+
+        if(id == R.id.action_settings)
+        {
+            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+            startActivity(intent);
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -224,5 +241,56 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         Intent intent = new Intent(this, DetailsActivity.class);
         intent.putExtra(MovieData.EXTRA_MOVIE_DATA, mAdapter.getMovieData(itemIndex));
         startActivity(intent);
+    }
+
+    private void setupSharedPreferences()
+    {
+        SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
+        loadAppColorFormPreferences(sharedPreferences);
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
+    {
+        Log.e(TAG, "onSharedPreferenceChanged <<<<<<<<<<<<<<<<<<<<<<<");
+
+        if(key.equals(getString(R.string.pref_app_color_key)))
+        {
+            loadAppColorFormPreferences(sharedPreferences);
+        }
+
+        else if(key.equals(getString(R.string.pref_sort_by_key)))
+        {
+
+        }
+    }
+
+    private void loadAppColorFormPreferences(SharedPreferences sharedPreferences)
+    {
+        Log.e(TAG, "loadAppColorFormPreferences <<<<<<<<<<<<<<<<<<<<<<<");
+        String appColorPreference = sharedPreferences.getString(getString(R.string.pref_app_color_key), getString(R.string.pref_app_color_value_dark));
+
+        Log.e(TAG, appColorPreference);
+
+        if(appColorPreference.equals(getString(R.string.pref_app_color_value_dark)))
+        {
+            setTheme(R.style.AppTheme);
+            Log.e(TAG, "DARK");
+        }
+
+        else if(appColorPreference.equals(getString(R.string.pref_app_color_value_light)))
+        {
+            setTheme(R.style.AppThemeLight);
+            Log.e(TAG, "LIGHT");
+
+        }
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
     }
 }

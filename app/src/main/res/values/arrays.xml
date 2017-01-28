@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="pref_app_color_option_labels">
+        <item>@string/pref_app_color_label_dark</item>
+        <item>@string/pref_app_color_label_light</item>
+    </array>
+
+    <array name="pref_app_color_option_values">
+        <item>@string/pref_app_color_value_dark</item>
+        <item>@string/pref_app_color_value_light</item>
+    </array>
+
+    <array name="pref_sort_by_option_labels">
+        <item>@string/pref_sort_by_label_alphabetic</item>
+        <item>@string/pref_sort_by_label_release</item>
+    </array>
+
+    <array name="pref_sort_by_option_values">
+        <item>@string/pref_sort_by_value_alphabetic</item>
+        <item>@string/pref_sort_by_value_release</item>
+    </array>
+</resources>
