@@ -11,11 +11,13 @@
     </array>
 
     <array name="pref_sort_by_option_labels">
+        <item>@string/pref_sort_by_label_insertion</item>
         <item>@string/pref_sort_by_label_alphabetic</item>
         <item>@string/pref_sort_by_label_release</item>
     </array>
 
     <array name="pref_sort_by_option_values">
+        <item>@string/pref_sort_by_value_insertion</item>
         <item>@string/pref_sort_by_value_alphabetic</item>
         <item>@string/pref_sort_by_value_release</item>
     </array>

@@ -14,21 +14,22 @@
     <string name="movie_name_empty">Please insert desired movie title</string>
 
     <!-- Content authority -->
-    <string name="content_authority">com.example.android.movieclub</string>
+    <string name="content_authority" translatable="false">com.example.android.movieclub</string>
 
     <!-- Text views -->
     <string name="movie_name_question">What is the name of the movie?</string>
-    <string name="title_activity_details">DetailsActivity</string>
+    <string name="title_activity_details">Movie Details</string>
 
     <!-- Info -->
     <string name="added_movie">Movie added to your list</string>
     <string name="removed_movie">Movie removed from your list</string>
     <string name="repeated_movie">You already have this movie in your list</string>
+    <string name="app_theme_changed">The app theme will change when you navigate back to the Movie List</string>
     
     <!-- Preferences options -->
         <!-- App Color -->
             <!-- Labels -->
-            <string name="pref_app_color_label">Background Style</string>
+            <string name="pref_app_color_label">Theme</string>
             <string name="pref_app_color_label_dark">Dark</string>
             <string name="pref_app_color_label_light">Light</string>
             <!-- Keys -->
@@ -38,10 +39,12 @@
         <!-- Sort by -->
             <!-- Labels -->
             <string name="pref_sort_by_label">Sort Movies By</string>
+            <string name="pref_sort_by_label_insertion">Insertion</string>
             <string name="pref_sort_by_label_alphabetic">A - Z</string>
             <string name="pref_sort_by_label_release">Release Date</string>
             <!-- Keys -->
             <string name="pref_sort_by_key" translatable="false">sort</string>
+            <string name="pref_sort_by_value_insertion" translatable="false">insertion</string>
             <string name="pref_sort_by_value_alphabetic" translatable="false">alphabetic</string>
             <string name="pref_sort_by_value_release" translatable="false">release</string>
     

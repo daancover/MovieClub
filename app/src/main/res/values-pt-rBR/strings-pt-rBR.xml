@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Activity names -->
+    <string name="app_name">Movie Club</string>
+    <string name="overlay_name">Nome do Filme</string>
+
+    <!-- Buttons -->
+    <string name="action_settings">Configurações</string>
+    <string name="action_search">Procurar</string>
+    <string name="action_cancel">Cancelar</string>
+
+    <!-- Error messages -->
+    <string name="connection_error">Erro de requisição. Por favor, certifique-se que seu dispositivo está conectado à internet</string>
+    <string name="json_exception">Filme não encontrado</string>
+    <string name="movie_name_empty">Por favor, insira o nome do filme desejado</string>
+
+    <!-- Text views -->
+    <string name="movie_name_question">Qual o nome do filme?</string>
+    <string name="title_activity_details">Detalhes sobre o filme</string>
+
+    <!-- Info -->
+    <string name="added_movie">Filme adicionado à sua lista</string>
+    <string name="removed_movie">Filme removido da sua lista</string>
+    <string name="repeated_movie">Você já possui este filme em sua lista</string>
+    <string name="app_theme_changed">O tema do aplicativo mudará quando você voltar para a lista de filmes</string>
+
+    <!-- Preferences options -->
+    <!-- App Color -->
+    <!-- Labels -->
+    <string name="pref_app_color_label">Tema</string>
+    <string name="pref_app_color_label_dark">Escuro</string>
+    <string name="pref_app_color_label_light">Claro</string>
+    <!-- Keys -->
+
+    <!-- Sort by -->
+    <!-- Labels -->
+    <string name="pref_sort_by_label">Ordenar Filmes Por</string>
+    <string name="pref_sort_by_label_insertion">Inserção</string>
+    <string name="pref_sort_by_label_alphabetic">A - Z</string>
+    <string name="pref_sort_by_label_release">Data de Lançamento</string>
+    <!-- Keys -->
+
+</resources>
