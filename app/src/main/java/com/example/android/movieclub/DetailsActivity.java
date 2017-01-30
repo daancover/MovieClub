@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.movieclub.database.MoviesContract;
 import com.example.android.movieclub.movie.MovieData;
@@ -88,6 +89,8 @@ public class DetailsActivity extends AppCompatActivity implements SharedPreferen
                 public void onClick(View view)
                 {
                     MoviesContract.MovieEntry.deleteMovie(DetailsActivity.this, mMovieData);
+                    Toast.makeText(DetailsActivity.this, getString(R.string.removed_movie), Toast.LENGTH_SHORT).show();
+                    onBackPressed();
                 }
             });
         }
@@ -125,7 +128,7 @@ public class DetailsActivity extends AppCompatActivity implements SharedPreferen
     {
         if(key.equals(getString(R.string.pref_app_color_key)))
         {
-            loadAppColorFormPreferences(sharedPreferences);
+            recreate();
         }
     }
 

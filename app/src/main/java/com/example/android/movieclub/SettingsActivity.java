@@ -56,7 +56,7 @@ public class SettingsActivity extends AppCompatActivity implements SharedPrefere
     {
         if(key.equals(getString(R.string.pref_app_color_key)))
         {
-            loadAppColorFormPreferences(sharedPreferences);
+            recreate();
         }
     }
 

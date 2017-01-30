@@ -1,74 +1,321 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/content_details"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.android.movieclub.DetailsActivity"
-    tools:showIn="@layout/activity_details"
-    >
+    android:layout_height="match_parent">
 
-    <ProgressBar
-        android:id="@+id/pb_progress_bar"
-        android:layout_width="@dimen/progress_bar_size"
-        android:layout_height="@dimen/progress_bar_size"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/padding_medium"
+        android:paddingRight="@dimen/padding_medium"
+        android:paddingTop="@dimen/padding_medium"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context="com.example.android.movieclub.DetailsActivity"
+        tools:showIn="@layout/activity_details">
 
-    <ImageView
-        android:id="@+id/iv_movie_poster"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        <ProgressBar
+            android:id="@+id/pb_progress_bar"
+            android:layout_width="@dimen/progress_bar_size"
+            android:layout_height="@dimen/progress_bar_size"
+            android:visibility="gone"/>
 
-    <TextView
-        android:id="@+id/tv_movie_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/tv_movie_actors"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+            <ImageView
+                android:id="@+id/iv_movie_poster"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_medium"
+                android:layout_marginLeft="@dimen/padding_big"
+                android:layout_marginBottom="@dimen/padding_medium"
+                android:layout_marginStart="@dimen/padding_big"
+                android:layout_gravity="center"/>
 
-    <TextView
-        android:id="@+id/tv_movie_director"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/tv_movie_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/text_title"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginRight="@dimen/padding_big"
+                android:layout_marginEnd="@dimen/padding_big"/>
 
-    <TextView
-        android:id="@+id/tv_movie_runtime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_movie_genre"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/padding_big">
 
-    <TextView
-        android:id="@+id/tv_movie_plot"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+            <View
+                android:id="@+id/view"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/colorPrimary"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginTop="@dimen/padding_medium"
+                android:layout_marginLeft="@dimen/padding_big"
+                android:layout_marginRight="@dimen/padding_big"/>
 
-    <TextView
-        android:id="@+id/tv_movie_released"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/tv_movie_plot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/text_info"
+                app:layout_constraintTop_toBottomOf="@id/view"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginTop="@dimen/padding_medium"
+                android:layout_marginLeft="@dimen/padding_big"
+                android:layout_marginRight="@dimen/padding_big"
+                android:paddingLeft="@dimen/padding_big"
+                android:paddingRight="@dimen/padding_big"/>
 
-    <TextView
-        android:id="@+id/tv_movie_metascore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+            <View
+                android:id="@+id/view2"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/colorPrimary"
+                app:layout_constraintTop_toBottomOf="@id/tv_movie_plot"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginTop="@dimen/padding_medium"
+                android:layout_marginLeft="@dimen/padding_big"
+                android:layout_marginRight="@dimen/padding_big"/>
 
-    <TextView
-        android:id="@+id/tv_movie_imdb_rating"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/tv_genre_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/text_info"
+                android:text="@string/genre_label"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/view2"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginTop="@dimen/padding_medium"
+                android:layout_marginLeft="@dimen/padding_big"
+                android:layout_marginStart="@dimen/padding_big"/>
 
-</LinearLayout>
+            <TextView
+                android:id="@+id/tv_movie_genre"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                style="@style/text_info"
+                app:layout_constraintTop_toBottomOf="@id/view2"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/tv_genre_label"
+                android:layout_marginTop="@dimen/padding_medium"
+                android:layout_marginLeft="@dimen/padding_small"
+                android:layout_marginRight="@dimen/padding_big"
+                android:layout_marginStart="@dimen/padding_small"
+                android:layout_marginEnd="@dimen/padding_big"
+                app:layout_constraintHorizontal_bias="0.0"/>
+
+            <TextView
+                android:id="@+id/tv_release_date_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/text_info"
+                android:text="@string/release_label"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/tv_movie_genre"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginTop="@dimen/padding_medium"
+                android:layout_marginLeft="@dimen/padding_big"
+                android:layout_marginStart="@dimen/padding_big"/>
+
+            <TextView
+                android:id="@+id/tv_movie_released"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                style="@style/text_info"
+                app:layout_constraintTop_toBottomOf="@id/tv_movie_genre"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/tv_release_date_label"
+                android:layout_marginTop="@dimen/padding_medium"
+                android:layout_marginLeft="@dimen/padding_small"
+                android:layout_marginRight="@dimen/padding_big"
+                android:layout_marginStart="@dimen/padding_small"
+                android:layout_marginEnd="@dimen/padding_big"
+                app:layout_constraintHorizontal_bias="0.0"/>
+
+            <TextView
+                android:id="@+id/tv_runtime_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/text_info"
+                android:text="@string/runtime_label"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/tv_movie_released"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginTop="@dimen/padding_medium"
+                android:layout_marginLeft="@dimen/padding_big"
+                android:layout_marginStart="@dimen/padding_big"/>
+
+            <TextView
+                android:id="@+id/tv_movie_runtime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                style="@style/text_info"
+                app:layout_constraintTop_toBottomOf="@id/tv_movie_released"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/tv_runtime_label"
+                android:layout_marginTop="@dimen/padding_medium"
+                android:layout_marginLeft="@dimen/padding_small"
+                android:layout_marginRight="@dimen/padding_big"
+                android:layout_marginStart="@dimen/padding_small"
+                android:layout_marginEnd="@dimen/padding_big"
+                app:layout_constraintHorizontal_bias="0.0"/>
+
+            <View
+                android:id="@+id/view3"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/colorPrimary"
+                app:layout_constraintTop_toBottomOf="@id/tv_movie_runtime"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginTop="@dimen/padding_medium"
+                android:layout_marginLeft="@dimen/padding_big"
+                android:layout_marginRight="@dimen/padding_big"/>
+
+            <TextView
+                android:id="@+id/tv_actors_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/text_info"
+                android:text="@string/actors_label"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/view3"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginTop="@dimen/padding_medium"
+                android:layout_marginLeft="@dimen/padding_big"
+                android:layout_marginStart="@dimen/padding_big"/>
+
+            <TextView
+                android:id="@+id/tv_movie_actors"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                style="@style/text_info"
+                app:layout_constraintTop_toBottomOf="@id/view3"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/tv_actors_label"
+                android:layout_marginTop="@dimen/padding_medium"
+                android:layout_marginLeft="@dimen/padding_small"
+                android:layout_marginRight="@dimen/padding_big"
+                android:layout_marginStart="@dimen/padding_small"
+                android:layout_marginEnd="@dimen/padding_big"
+                app:layout_constraintHorizontal_bias="0.0"/>
+
+            <TextView
+                android:id="@+id/tv_director_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/text_info"
+                android:text="@string/director_label"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/tv_movie_actors"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginTop="@dimen/padding_medium"
+                android:layout_marginLeft="@dimen/padding_big"
+                android:layout_marginStart="@dimen/padding_big"/>
+
+            <TextView
+                android:id="@+id/tv_movie_director"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                style="@style/text_info"
+                app:layout_constraintTop_toBottomOf="@id/tv_movie_actors"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/tv_director_label"
+                android:layout_marginTop="@dimen/padding_medium"
+                android:layout_marginLeft="@dimen/padding_small"
+                android:layout_marginRight="@dimen/padding_big"
+                android:layout_marginStart="@dimen/padding_small"
+                android:layout_marginEnd="@dimen/padding_big"
+                app:layout_constraintHorizontal_bias="0.0"/>
+
+            <View
+                android:id="@+id/view4"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/colorPrimary"
+                app:layout_constraintTop_toBottomOf="@id/tv_movie_director"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginTop="@dimen/padding_medium"
+                android:layout_marginLeft="@dimen/padding_big"
+                android:layout_marginRight="@dimen/padding_big"/>
+
+            <TextView
+                android:id="@+id/tv_metascore_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/text_info"
+                android:text="@string/metascore_label"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/view4"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginTop="@dimen/padding_medium"
+                android:layout_marginLeft="@dimen/padding_big"
+                android:layout_marginStart="@dimen/padding_big"/>
+
+            <TextView
+                android:id="@+id/tv_movie_metascore"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                style="@style/text_info"
+                app:layout_constraintTop_toBottomOf="@id/view4"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/tv_metascore_label"
+                android:layout_marginTop="@dimen/padding_medium"
+                android:layout_marginLeft="@dimen/padding_small"
+                android:layout_marginRight="@dimen/padding_big"
+                android:layout_marginStart="@dimen/padding_small"
+                android:layout_marginEnd="@dimen/padding_big"
+                app:layout_constraintHorizontal_bias="0.0"/>
+
+            <TextView
+                android:id="@+id/tv_imdb_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/text_info"
+                android:text="@string/imdb_label"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/tv_movie_metascore"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginTop="@dimen/padding_medium"
+                android:layout_marginLeft="@dimen/padding_big"
+                android:layout_marginStart="@dimen/padding_big"/>
+
+            <TextView
+                android:id="@+id/tv_movie_imdb_rating"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                style="@style/text_info"
+                app:layout_constraintTop_toBottomOf="@id/tv_movie_metascore"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/tv_imdb_label"
+                android:layout_marginTop="@dimen/padding_medium"
+                android:layout_marginLeft="@dimen/padding_small"
+                android:layout_marginRight="@dimen/padding_big"
+                android:layout_marginStart="@dimen/padding_small"
+                android:layout_marginEnd="@dimen/padding_big"
+                android:layout_marginBottom="@dimen/padding_medium"
+                app:layout_constraintHorizontal_bias="0.0"/>
+
+        </android.support.constraint.ConstraintLayout>
+    </LinearLayout>
+</ScrollView>

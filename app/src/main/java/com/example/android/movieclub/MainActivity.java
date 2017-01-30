@@ -83,7 +83,15 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         // Setup movie list and user feedback
         mProgressBar = (ProgressBar) findViewById(R.id.pb_progress_bar);
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_movies);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3, LinearLayoutManager.VERTICAL, false);
+
+        int columnsQtt = 3;
+
+        if(getResources().getConfiguration().orientation == getResources().getConfiguration().ORIENTATION_LANDSCAPE)
+        {
+            columnsQtt = 5;
+        }
+
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, columnsQtt, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(gridLayoutManager);
         mRecyclerView.setHasFixedSize(true);
         mAdapter = new MovieAdapter(MainActivity.this, this);
@@ -374,16 +382,21 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
     {
-        if(key.equals(getString(R.string.pref_app_color_key)))
+        /*if(key.equals(getString(R.string.pref_app_color_key)))
         {
             Log.d(TAG, ">>>>>KEY EQUALS THEME<<<<<");
             loadAppColorFormPreferences(sharedPreferences);
-            Toast.makeText(MainActivity.this, getString(R.string.app_theme_changed), Toast.LENGTH_LONG).show();
+            //Toast.makeText(MainActivity.this, getString(R.string.app_theme_changed), Toast.LENGTH_LONG).show();
         }
 
         else if(key.equals(getString(R.string.pref_sort_by_key)))
         {
             loadSortOrderFormPreferences(sharedPreferences);
+        }*/
+
+        if(key.equals(getString(R.string.pref_app_color_key)) || key.equals(getString(R.string.pref_sort_by_key)))
+        {
+            recreate();
         }
     }
 

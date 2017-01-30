@@ -16,7 +16,17 @@
 
     <!-- Text views -->
     <string name="movie_name_question">Qual o nome do filme?</string>
-    <string name="title_activity_details">Detalhes sobre o filme</string>
+    <string name="title_activity_details">Detalhes do Filme</string>
+    <string name="basic_info">Informações Básicas</string>
+
+    <!-- Infor Labels -->
+    <string name="genre_label">Gênero:</string>
+    <string name="release_label">Data de Lançamento:</string>
+    <string name="runtime_label">Duração:</string>
+    <string name="actors_label">Atores:</string>
+    <string name="director_label">Diretor:</string>
+    <string name="metascore_label">Metascore:</string>
+    <string name="imdb_label">Imdb:</string>
 
     <!-- Info -->
     <string name="added_movie">Filme adicionado à sua lista</string>
