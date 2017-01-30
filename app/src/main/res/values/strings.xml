@@ -35,6 +35,7 @@
     <string name="removed_movie">Movie removed from your list</string>
     <string name="repeated_movie">You already have this movie in your list</string>
     <string name="app_theme_changed">The app theme will change when you navigate back to the Movie List</string>
+    <string name="no_movies">You have no movies in your list</string>
     
     <!-- Preferences options -->
         <!-- App Color -->

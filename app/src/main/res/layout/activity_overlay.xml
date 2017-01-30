@@ -23,7 +23,7 @@
         <requestFocus />
     </EditText>
 
-    <Button
+    <!--<Button
         android:id="@+id/bt_action_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -43,6 +43,6 @@
         android:layout_alignBottom="@+id/bt_action_cancel"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:onClick="onSearchClicked" />
+        android:onClick="onSearchClicked" />-->
 
 </RelativeLayout>

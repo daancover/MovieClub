@@ -1,20 +1,26 @@
 package com.example.android.movieclub;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -33,6 +39,9 @@ import org.json.JSONObject;
 import java.util.Date;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieItemClickListener, SharedPreferences.OnSharedPreferenceChangeListener
 {
     // Tag for debugging purposes
@@ -42,16 +51,16 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     private static final String urlBegin = "http://www.omdbapi.com/?t=";
     private static final String urlEnd = "&y=&plot=short&r=json";
 
-    // Constants to get results from OverlayActivity
-    private static final int REQUEST_CODE_OVERLAY_ACTIVITY = 1;
-    private static final String MOVIE_NAME_TAG = "movie_name";
+    // Movie list sorting order
+    private String sortBy;
 
     // Visible info
-    private ProgressBar mProgressBar;
-    private RecyclerView mRecyclerView;
     private MovieAdapter mAdapter;
 
-    private String sortBy;
+    @BindView(R.id.pb_progress_bar) ProgressBar mProgressBar;
+    @BindView(R.id.fab) FloatingActionButton mFab;
+    @BindView(R.id.rv_movies)  RecyclerView mRecyclerView;
+    @BindView(R.id.tv_no_movies) TextView mNoMoviesInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -67,30 +76,32 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
         // Button to add a new movie
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener()
+        mFab.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                Intent intent = new Intent(MainActivity.this, OverlayActivity.class);
-                startActivityForResult(intent, REQUEST_CODE_OVERLAY_ACTIVITY);
+                addMovie();
             }
         });
 
-        // Setup movie list and user feedback
-        mProgressBar = (ProgressBar) findViewById(R.id.pb_progress_bar);
-        mRecyclerView = (RecyclerView) findViewById(R.id.rv_movies);
-
+        // Set columns accordingly to the device size and orientation
         int columnsQtt = 3;
 
-        if(getResources().getConfiguration().orientation == getResources().getConfiguration().ORIENTATION_LANDSCAPE)
+        if(findViewById(R.id.tablet_view) != null)
         {
-            columnsQtt = 5;
+            columnsQtt += 2;
         }
 
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+        {
+            columnsQtt += 2;
+        }
+
+        // Setup movie list
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, columnsQtt, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(gridLayoutManager);
         mRecyclerView.setHasFixedSize(true);
@@ -109,22 +120,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         // Reload movie list
         mAdapter.setMovieData(null);
         loadMovieData();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if(requestCode == REQUEST_CODE_OVERLAY_ACTIVITY)
-        {
-            if(resultCode == RESULT_OK)
-            {
-                String movieName = data.getStringExtra(MOVIE_NAME_TAG);
-
-                requestMovie(movieName);
-            }
-        }
     }
 
     // Add items to the action bar
@@ -151,6 +146,31 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         return super.onOptionsItemSelected(item);
     }
 
+    // Create a dialog for the user to search for a movie
+    void addMovie()
+    {
+        final View view = LayoutInflater.from(this).inflate(R.layout.activity_overlay, null);
+
+        new AlertDialog.Builder(this).setTitle(R.string.overlay_name).setView(view).setPositiveButton(R.string.action_search, new DialogInterface.OnClickListener()
+        {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i)
+                    {
+                        String movieName = ((EditText) view.findViewById(R.id.et_movie_title)).getText().toString();
+
+                        if(movieName.isEmpty())
+                        {
+                            Toast.makeText(MainActivity.this, getString(R.string.movie_name_empty), Toast.LENGTH_SHORT).show();
+                        }
+
+                        else
+                        {
+                            requestMovie(movieName);
+                        }
+                    }
+        }).setNegativeButton(R.string.action_cancel, null).show();
+    }
+
     void loadMovieData()
     {
         mProgressBar.setVisibility(View.VISIBLE);
@@ -168,6 +188,17 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         }
 
         mAdapter.setMovieData(movieData);
+
+        // No movies info
+        if(movieData.size() == 0)
+        {
+            mNoMoviesInfo.setVisibility(View.VISIBLE);
+        }
+
+        else
+        {
+            mNoMoviesInfo.setVisibility(View.GONE);
+        }
     }
 
     private void alphabeticalInsertion(List<MovieData> movieData)

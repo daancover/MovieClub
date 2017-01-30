@@ -30,6 +30,7 @@ public class DetailsActivity extends AppCompatActivity implements SharedPreferen
     MovieData mMovieData;
 
     @BindView(R.id.pb_progress_bar) ProgressBar mProgressBar;
+    @BindView(R.id.fab) FloatingActionButton mFab;
     @BindView(R.id.iv_movie_poster) ImageView mPoster;
     @BindView(R.id.tv_movie_title) TextView mTitle;
     @BindView(R.id.tv_movie_actors) TextView mActors;
@@ -50,8 +51,6 @@ public class DetailsActivity extends AppCompatActivity implements SharedPreferen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
         ButterKnife.bind(this);
-        /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);*/
 
         ActionBar actionBar = this.getSupportActionBar();
 
@@ -62,9 +61,6 @@ public class DetailsActivity extends AppCompatActivity implements SharedPreferen
 
         if(getIntent().hasExtra(MovieData.EXTRA_MOVIE_DATA))
         {
-            // User feedback
-            mProgressBar = (ProgressBar) findViewById(R.id.pb_progress_bar);
-
             // Get movie data from previous activity
             mMovieData = getIntent().getParcelableExtra(MovieData.EXTRA_MOVIE_DATA);
 
@@ -82,8 +78,7 @@ public class DetailsActivity extends AppCompatActivity implements SharedPreferen
             mMetascore.setText(mMovieData.getMetascore());
             mImdbRating.setText(mMovieData.getImdbRating());
 
-            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-            fab.setOnClickListener(new View.OnClickListener()
+            mFab.setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(View view)

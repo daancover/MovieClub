@@ -33,6 +33,7 @@
     <string name="removed_movie">Filme removido da sua lista</string>
     <string name="repeated_movie">Você já possui este filme em sua lista</string>
     <string name="app_theme_changed">O tema do aplicativo mudará quando você voltar para a lista de filmes</string>
+    <string name="no_movies">Você não tem filmes em sua lista</string>
 
     <!-- Preferences options -->
     <!-- App Color -->
