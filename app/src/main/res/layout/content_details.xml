@@ -41,7 +41,7 @@
 
             <TextView
                 android:id="@+id/tv_movie_title"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/text_title"
                 android:layout_gravity="center"

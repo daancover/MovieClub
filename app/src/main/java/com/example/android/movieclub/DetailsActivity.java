@@ -1,12 +1,15 @@
 package com.example.android.movieclub;
 
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.PreferenceManager;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -83,9 +86,10 @@ public class DetailsActivity extends AppCompatActivity implements SharedPreferen
                 @Override
                 public void onClick(View view)
                 {
-                    MoviesContract.MovieEntry.deleteMovie(DetailsActivity.this, mMovieData);
+                    /*MoviesContract.MovieEntry.deleteMovie(DetailsActivity.this, mMovieData);
                     Toast.makeText(DetailsActivity.this, getString(R.string.removed_movie), Toast.LENGTH_SHORT).show();
-                    onBackPressed();
+                    onBackPressed();*/
+                    deleteMovie();
                 }
             });
         }
@@ -147,5 +151,21 @@ public class DetailsActivity extends AppCompatActivity implements SharedPreferen
     {
         super.onDestroy();
         PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
+    }
+
+    void deleteMovie()
+    {
+        final View view = LayoutInflater.from(this).inflate(R.layout.remove_dialog, null);
+
+        new AlertDialog.Builder(this).setMessage(R.string.delete_movie_question).setView(view).setPositiveButton(R.string.action_confirm, new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i)
+            {
+                MoviesContract.MovieEntry.deleteMovie(DetailsActivity.this, mMovieData);
+                Toast.makeText(DetailsActivity.this, getString(R.string.removed_movie), Toast.LENGTH_SHORT).show();
+                onBackPressed();
+            }
+        }).setNegativeButton(R.string.action_cancel, null).show();
     }
 }

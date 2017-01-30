@@ -13,7 +13,6 @@ import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,6 +35,7 @@ import com.example.android.movieclub.movie.MovieData;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         mRecyclerView.setAdapter(mAdapter);
 
         // Load saved movies form local db
-        loadMovieData();
+        loadMovieData(false);
     }
 
     @Override
@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         // Reload movie list
         mAdapter.setMovieData(null);
-        loadMovieData();
+        loadMovieData(false);
     }
 
     // Add items to the action bar
@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     {
         final View view = LayoutInflater.from(this).inflate(R.layout.activity_overlay, null);
 
-        new AlertDialog.Builder(this).setTitle(R.string.overlay_name).setView(view).setPositiveButton(R.string.action_search, new DialogInterface.OnClickListener()
+        new AlertDialog.Builder(this).setTitle(R.string.movie_name_question).setView(view).setPositiveButton(R.string.action_confirm, new DialogInterface.OnClickListener()
         {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i)
@@ -171,12 +171,16 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         }).setNegativeButton(R.string.action_cancel, null).show();
     }
 
-    void loadMovieData()
+    // Load movies from database
+    void loadMovieData(boolean justInsertedItem)
     {
+        // User Feedback
         mProgressBar.setVisibility(View.VISIBLE);
         mRecyclerView.setVisibility(View.VISIBLE);
         List<MovieData> movieData = MoviesContract.MovieEntry.loadMovies(this, mProgressBar);
+        MovieData insertedMovieData = movieData.get(movieData.size() - 1);
 
+        // Check sorting order
         if(sortBy.equals(getString(R.string.pref_sort_by_value_alphabetic)))
         {
             alphabeticalInsertion(movieData);
@@ -189,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         mAdapter.setMovieData(movieData);
 
-        // No movies info
+        // No movies in the list
         if(movieData.size() == 0)
         {
             mNoMoviesInfo.setVisibility(View.VISIBLE);
@@ -199,8 +203,16 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         {
             mNoMoviesInfo.setVisibility(View.GONE);
         }
+
+        // Show recently added item
+        if(justInsertedItem)
+        {
+            int positionToShow = movieData.indexOf(insertedMovieData);
+            mRecyclerView.scrollToPosition(positionToShow);
+        }
     }
 
+    // Insertion sort by name
     private void alphabeticalInsertion(List<MovieData> movieData)
     {
         for (int i = 1; i < movieData.size(); i++)
@@ -218,8 +230,20 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         }
     }
 
+    // Insertion sort by release date
     private void releaseDateInsertion(List<MovieData> movieData)
     {
+        List<MovieData> removedItems = new ArrayList<>();
+
+        for(int i = 0; i < movieData.size(); i++)
+        {
+            if(getDate(movieData.get(i)) == null)
+            {
+                removedItems.add(movieData.remove(i));
+                i--;
+            }
+        }
+
         for (int i = 1; i < movieData.size(); i++)
         {
             MovieData tmp = movieData.get(i);
@@ -233,8 +257,14 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
             movieData.set(j + 1, tmp);
         }
+
+        for(int i = 0; i < removedItems.size(); i++)
+        {
+            movieData.add(removedItems.get(i));
+        }
     }
 
+    // Get Date object that corresponds to the movie release date
     private Date getDate(MovieData movieData)
     {
         String stringDate = movieData.getReleased();
@@ -300,16 +330,18 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             month = 12;
         }
 
+        else
+        {
+            return null;
+        }
+
         int day = Integer.parseInt(stringDate.substring(0, 2));
         int year = Integer.parseInt(stringDate.substring(stringDate.length() - 4, stringDate.length()));
-
-        Log.d(TAG, "day " + day);
-        Log.d(TAG, "month " + month);
-        Log.d(TAG, "year " + year);
 
         return new Date(year, month, day);
     }
 
+    // Rest request to the api
     public MovieData requestMovie(final String movieName)
     {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
@@ -334,11 +366,12 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                             response.getString(MoviesContract.MovieEntry.COLUMN_METASCORE),
                             response.getString(MoviesContract.MovieEntry.COLUMN_IMBD_RATING));
 
+                    // Try to save movie
                     if(MoviesContract.MovieEntry.saveMovie(MainActivity.this, movieData))
                     {
                         Toast.makeText(MainActivity.this, getString(R.string.added_movie), Toast.LENGTH_SHORT).show();
                         mAdapter.setMovieData(null);
-                        loadMovieData();
+                        loadMovieData(true);
                     }
 
                     else
@@ -367,6 +400,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         return null;
     }
 
+    // Build url using the movie name given by the user
     public String buildUrl(String movieName)
     {
         String url = urlBegin;
@@ -393,6 +427,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         return url;
     }
 
+    // Handle movie click
     @Override
     public void onMovieItemClick(int itemIndex)
     {
@@ -401,9 +436,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         startActivity(intent);
     }
 
+    // Setup user preferences
     private void setupSharedPreferences()
     {
-        Log.d(TAG, ">>>>>CREATE<<<<<");
         SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
         loadAppColorFormPreferences(sharedPreferences);
         loadSortOrderFormPreferences(sharedPreferences);
@@ -413,46 +448,35 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
     {
-        /*if(key.equals(getString(R.string.pref_app_color_key)))
-        {
-            Log.d(TAG, ">>>>>KEY EQUALS THEME<<<<<");
-            loadAppColorFormPreferences(sharedPreferences);
-            //Toast.makeText(MainActivity.this, getString(R.string.app_theme_changed), Toast.LENGTH_LONG).show();
-        }
-
-        else if(key.equals(getString(R.string.pref_sort_by_key)))
-        {
-            loadSortOrderFormPreferences(sharedPreferences);
-        }*/
-
         if(key.equals(getString(R.string.pref_app_color_key)) || key.equals(getString(R.string.pref_sort_by_key)))
         {
             recreate();
         }
     }
 
+    // Load color set by the user
     private void loadAppColorFormPreferences(SharedPreferences sharedPreferences)
     {
         String appColorPreference = sharedPreferences.getString(getString(R.string.pref_app_color_key), getString(R.string.pref_app_color_value_dark));
 
         if(appColorPreference.equals(getString(R.string.pref_app_color_value_dark)))
         {
-            Log.d(TAG, ">>>>>DARK<<<<<");
             setTheme(R.style.AppTheme);
         }
 
         else if(appColorPreference.equals(getString(R.string.pref_app_color_value_light)))
         {
-            Log.d(TAG, ">>>>>LIGHT<<<<<");
             setTheme(R.style.AppThemeLight);
         }
     }
 
+    // Load sort order set by the user
     private void loadSortOrderFormPreferences(SharedPreferences sharedPreferences)
     {
         sortBy = sharedPreferences.getString(getString(R.string.pref_sort_by_key), getString(R.string.pref_sort_by_label_insertion));
     }
 
+    // Overridden to unregister Shared Preferences Listener
     @Override
     protected void onDestroy()
     {

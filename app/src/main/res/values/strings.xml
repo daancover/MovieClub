@@ -5,7 +5,7 @@
 
     <!-- Buttons -->
     <string name="action_settings">Settings</string>
-    <string name="action_search">Search</string>
+    <string name="action_confirm">Confirm</string>
     <string name="action_cancel">Cancel</string>
 
     <!-- Error messages -->
@@ -20,6 +20,7 @@
     <string name="movie_name_question">What is the name of the movie?</string>
     <string name="title_activity_details">Movie Details</string>
     <string name="basic_info">Basic Info</string>
+    <string name="delete_movie_question">Delete this movie?</string>
 
     <!-- Infor Labels -->
     <string name="genre_label">Genre:</string>

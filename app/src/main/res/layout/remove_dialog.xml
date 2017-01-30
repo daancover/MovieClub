@@ -5,12 +5,4 @@
               android:padding="@dimen/padding_big"
               android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/et_movie_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <requestFocus />
-    </EditText>
-
 </LinearLayout>
