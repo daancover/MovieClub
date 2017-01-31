@@ -45,7 +45,7 @@ public class TrailersFragment extends Fragment implements TrailersAdapter.Traile
     private static final String TRAILERS_BASE_URL = "https://api.themoviedb.org/3/movie/";
     private static final String MOVIES_BASE_URL = "https://api.themoviedb.org/3/search/movie?api_key=";
     private static final String YOUTUBE_BASE_URL = "https://www.youtube.com/watch?v=";
-    private static final String API_KEY = "1ae130fa6304ea190a394fc1dd389c29";
+    private static final String API_KEY = "your_api_key";
     private static final String QUERY = "&query=";
     private static final String SPACE = "%20";
     private static final String KEY = "key";
