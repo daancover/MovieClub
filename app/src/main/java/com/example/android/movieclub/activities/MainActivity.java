@@ -1,4 +1,4 @@
-package com.example.android.movieclub;
+package com.example.android.movieclub.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -28,6 +28,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.android.movieclub.R;
 import com.example.android.movieclub.database.MoviesContract;
 import com.example.android.movieclub.movie.MovieAdapter;
 import com.example.android.movieclub.movie.MovieData;
@@ -178,7 +179,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         mProgressBar.setVisibility(View.VISIBLE);
         mRecyclerView.setVisibility(View.VISIBLE);
         List<MovieData> movieData = MoviesContract.MovieEntry.loadMovies(this, mProgressBar);
-        MovieData insertedMovieData = movieData.get(movieData.size() - 1);
+        MovieData insertedMovieData = movieData.size() > 0 ? movieData.get(movieData.size() - 1) : null;
 
         // Check sorting order
         if(sortBy.equals(getString(R.string.pref_sort_by_value_alphabetic)))
@@ -364,7 +365,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                             response.getString(MoviesContract.MovieEntry.COLUMN_PLOT),
                             response.getString(MoviesContract.MovieEntry.COLUMN_RELEASED),
                             response.getString(MoviesContract.MovieEntry.COLUMN_METASCORE),
-                            response.getString(MoviesContract.MovieEntry.COLUMN_IMBD_RATING));
+                            response.getString(MoviesContract.MovieEntry.COLUMN_IMBD_RATING),
+                            "");
 
                     // Try to save movie
                     if(MoviesContract.MovieEntry.saveMovie(MainActivity.this, movieData))

@@ -19,8 +19,9 @@ public class MovieData implements Parcelable
     private String released;
     private String metascore;
     private String imdbRating;
+    private String id;
 
-    public MovieData(String title, String actors, String director, String runtime,  String genre, String poster, String plot, String released,  String metascore, String imdbRating)
+    public MovieData(String title, String actors, String director, String runtime,  String genre, String poster, String plot, String released,  String metascore, String imdbRating, String id)
     {
         this.title = title;
         this.actors = actors;
@@ -32,6 +33,7 @@ public class MovieData implements Parcelable
         this.released = released;
         this.metascore = metascore;
         this.imdbRating = imdbRating;
+        this.id = id;
     }
 
     protected MovieData(Parcel in)
@@ -46,6 +48,7 @@ public class MovieData implements Parcelable
         this.released = in.readString();
         this.metascore = in.readString();
         this.imdbRating = in.readString();
+        this.id = in.readString();
     }
 
     public String getTitle()
@@ -98,6 +101,16 @@ public class MovieData implements Parcelable
         return imdbRating;
     }
 
+    public String getId()
+    {
+        return id;
+    }
+
+    public void setId(String id)
+    {
+        this.id = id;
+    }
+
     public static final Creator<MovieData> CREATOR = new Creator<MovieData>()
     {
         @Override
@@ -132,5 +145,6 @@ public class MovieData implements Parcelable
         dest.writeString(released);
         dest.writeString(metascore);
         dest.writeString(imdbRating);
+        dest.writeString(id);
     }
 }

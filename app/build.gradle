@@ -43,4 +43,5 @@ dependencies {
 
     // Settings support
     compile 'com.android.support:preference-v7:25.1.0'
+    compile 'com.google.android.gms:play-services-appindexing:8.4.0'
 }

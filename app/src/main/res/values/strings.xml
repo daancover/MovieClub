@@ -8,6 +8,10 @@
     <string name="action_confirm">Confirm</string>
     <string name="action_cancel">Cancel</string>
 
+    <!-- Tabs -->
+    <string name="details_tab">Details</string>
+    <string name="trailers_tab">Trailers</string>
+
     <!-- Error messages -->
     <string name="connection_error">Error trying to request data. Please make sure your device is connected to the internet</string>
     <string name="json_exception">Unable to find movie</string>
@@ -37,6 +41,7 @@
     <string name="repeated_movie">You already have this movie in your list</string>
     <string name="app_theme_changed">The app theme will change when you navigate back to the Movie List</string>
     <string name="no_movies">You have no movies in your list</string>
+    <string name="no_trailers">This movie has no trailers available</string>
     
     <!-- Preferences options -->
         <!-- App Color -->

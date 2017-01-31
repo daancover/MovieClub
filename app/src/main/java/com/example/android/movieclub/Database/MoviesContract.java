@@ -40,6 +40,7 @@ public class MoviesContract
         public static final String COLUMN_RELEASED = "Released";
         public static final String COLUMN_METASCORE = "Metascore";
         public static final String COLUMN_IMBD_RATING = "imdbRating";
+        public static final String COLUMN_ID = "id";
 
         public static final String TYPE_TEXT = " TEXT";
 
@@ -55,7 +56,8 @@ public class MoviesContract
                         COLUMN_PLOT         + TYPE_TEXT + "," +
                         COLUMN_RELEASED     + TYPE_TEXT + "," +
                         COLUMN_METASCORE    + TYPE_TEXT + "," +
-                        COLUMN_IMBD_RATING  + TYPE_TEXT + " )";
+                        COLUMN_IMBD_RATING  + TYPE_TEXT + ","+
+                        COLUMN_ID  + TYPE_TEXT + " )";
 
         public static final String DELETE_ENTRIES = "DROP TABLE IF EXISTS " + TABLE_NAME;
 
@@ -84,6 +86,7 @@ public class MoviesContract
                 values.put(COLUMN_RELEASED, movieData.getReleased());
                 values.put(COLUMN_METASCORE, movieData.getMetascore());
                 values.put(COLUMN_IMBD_RATING, movieData.getImdbRating());
+                values.put(COLUMN_ID, movieData.getId());
 
                 ContentResolver contentResolver = context.getContentResolver();
                 contentResolver.bulkInsert(CONTENT_URI, new ContentValues[]{values});
@@ -109,7 +112,7 @@ public class MoviesContract
         {
             List<MovieData> returnList = new ArrayList<>();
 
-            String[] columns = { COLUMN_TITLE, COLUMN_ACTORS, COLUMN_DIRECTOR, COLUMN_RUNTIME, COLUMN_GENRE, COLUMN_POSTER, COLUMN_PLOT, COLUMN_RELEASED, COLUMN_METASCORE, COLUMN_IMBD_RATING };
+            String[] columns = { COLUMN_TITLE, COLUMN_ACTORS, COLUMN_DIRECTOR, COLUMN_RUNTIME, COLUMN_GENRE, COLUMN_POSTER, COLUMN_PLOT, COLUMN_RELEASED, COLUMN_METASCORE, COLUMN_IMBD_RATING, COLUMN_ID };
 
             ContentResolver contentResolver = context.getContentResolver();
 
@@ -126,7 +129,8 @@ public class MoviesContract
                         cursor.getString(cursor.getColumnIndex(COLUMN_PLOT)),
                         cursor.getString(cursor.getColumnIndex(COLUMN_RELEASED)),
                         cursor.getString(cursor.getColumnIndex(COLUMN_METASCORE)),
-                        cursor.getString(cursor.getColumnIndex(COLUMN_IMBD_RATING)));
+                        cursor.getString(cursor.getColumnIndex(COLUMN_IMBD_RATING)),
+                        cursor.getString(cursor.getColumnIndex(COLUMN_ID)));
 
                 returnList.add(movie);
             }

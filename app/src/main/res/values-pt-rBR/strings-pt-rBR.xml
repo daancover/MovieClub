@@ -9,6 +9,10 @@
     <string name="action_confirm">Confirmar</string>
     <string name="action_cancel">Cancelar</string>
 
+    <!-- Tabs -->
+    <string name="details_tab">Detalhes</string>
+    <string name="trailers_tab">Trailers</string>
+
     <!-- Error messages -->
     <string name="connection_error">Erro de requisição. Por favor, certifique-se que seu dispositivo está conectado à internet</string>
     <string name="json_exception">Filme não encontrado</string>

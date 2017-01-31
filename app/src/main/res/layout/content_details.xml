@@ -15,7 +15,7 @@
         android:paddingRight="@dimen/padding_medium"
         android:paddingTop="@dimen/padding_medium"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context="com.example.android.movieclub.DetailsActivity"
+        tools:context="com.example.android.movieclub.activities.DetailsActivity"
         tools:showIn="@layout/activity_details">
 
         <ProgressBar
